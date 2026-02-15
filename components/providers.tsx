@@ -9,6 +9,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
       apiKey={process.env.NEXT_PUBLIC_TAMBO_API_KEY!}
       components={components}
       tools={tools}
+      initialMessages={[
+        {
+          role: 'system',
+          content: [{
+            type: 'text',
+            text: "You are a Life Coach. Always use tools to get data. Always render TodoList or EventList components. Never print raw data."
+          }]
+        }
+      ]}
     >
       {children}
     </TamboProvider>
