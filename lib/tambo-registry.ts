@@ -3,12 +3,13 @@ import { z } from "zod";
 import { WeatherCard } from "@/components/features/weather-card";
 import { TodoList } from "@/components/features/todo-list";
 import { EventList } from "@/components/features/event-list";
-import { MOCK_EVENTS, MOCK_TASKS, MOCK_WEATHER } from "@/lib/mock-data";
+import { MOCK_WEATHER } from "@/lib/mock-data";
+import { getTasksAction, getEventsAction } from "./actions";
 
 export const components: TamboComponent[] = [
   {
     name: "WeatherCard",
-    description: "Displays current weather. 1. Call 'getWeather'. 2. Pass the result object to 'data' prop. DO NOT PRINT JSON.",
+    description: "Displays current weather. MANDATORY: Call 'getWeather' first, then render this component with the result in the 'data' prop. DO NOT print JSON.",
     component: WeatherCard,
     propsSchema: z.object({
       data: z.object({
@@ -20,7 +21,7 @@ export const components: TamboComponent[] = [
   },
   {
     name: "TodoList",
-    description: "Displays tasks. 1. Call 'getTasks'. 2. Pass the result array to 'tasks' prop. DO NOT PRINT JSON.",
+    description: "Displays a list of tasks/todos. MANDATORY: Call 'getTasks' first, then render this component with the result array in 'tasks' prop. DO NOT print raw JSON.",
     component: TodoList,
     propsSchema: z.object({
       tasks: z.array(z.object({
@@ -33,7 +34,7 @@ export const components: TamboComponent[] = [
   },
   {
     name: "EventList",
-    description: "Displays events. 1. Call 'getEvents'. 2. Pass the result array to 'events' prop. DO NOT PRINT JSON.",
+    description: "Displays upcoming events. MANDATORY: Call 'getEvents' first, then render this component with the result array in 'events' prop. DO NOT print raw JSON.",
     component: EventList,
     propsSchema: z.object({
       events: z.array(z.object({
@@ -59,24 +60,20 @@ export const tools = [
   }),
   defineTool({
     name: "getTasks",
-    description: "Get user tasks",
+    description: "Get user tasks from database",
     inputSchema: z.object({}),
     tool: async () => {
-        console.log("TOOL CALLED: getTasks");
-        return MOCK_TASKS;
+        console.log("TOOL CALLED: getTasks (DB)");
+        return await getTasksAction();
     },
   }),
   defineTool({
     name: "getEvents",
-    description: "Get calendar events",
+    description: "Get calendar events from database",
     inputSchema: z.object({}),
     tool: async () => {
-        console.log("TOOL CALLED: getEvents");
-        return MOCK_EVENTS.map(e => ({
-            ...e,
-            start: e.start.toISOString(),
-            end: e.end.toISOString()
-        }));
+        console.log("TOOL CALLED: getEvents (DB)");
+        return await getEventsAction();
     },
   })
 ];
