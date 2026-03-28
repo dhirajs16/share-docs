@@ -1,8 +1,7 @@
-# Google Docs Clone
+# Share Docs
 
 A Google Docs clone built with Next.js 15 and React 19.
 
-By [codewithantonio.com](https://codewithantonio.com)
 
 ## Prerequisites
 
